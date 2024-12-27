@@ -1,0 +1,70 @@
+[4mfseek[24m(3)                                                                       Library Functions Manual                                                                      [4mfseek[24m(3)
+
+[1mNAME[0m
+       fgetpos, fseek, fsetpos, ftell, rewind - reposition a stream
+
+[1mLIBRARY[0m
+       Standard C library ([4mlibc[24m, [4m-lc[24m)
+
+[1mSYNOPSIS[0m
+       [1m#include <stdio.h>[0m
+
+       [1mint fseek(FILE *[4m[22mstream[24m[1m, long [4m[22moffset[24m[1m, int [4m[22mwhence[24m[1m);[0m
+       [1mlong ftell(FILE *[4m[22mstream[24m[1m);[0m
+
+       [1mvoid rewind(FILE *[4m[22mstream[24m[1m);[0m
+
+       [1mint fgetpos(FILE *restrict [4m[22mstream[24m[1m, fpos_t *restrict [4m[22mpos[24m[1m);[0m
+       [1mint fsetpos(FILE *[4m[22mstream[24m[1m, const fpos_t *[4m[22mpos[24m[1m);[0m
+
+[1mDESCRIPTION[0m
+       The [1mfseek[22m() function sets the file position indicator for the stream pointed to by [4mstream[24m.  The new position, measured in bytes, is obtained by adding [4moffset[24m bytes to the po‐
+       sition  specified by [4mwhence[24m.  If [4mwhence[24m is set to [1mSEEK_SET[22m, [1mSEEK_CUR[22m, or [1mSEEK_END[22m, the offset is relative to the start of the file, the current position indicator, or end-of-
+       file, respectively.  A successful call to the [1mfseek[22m() function clears the end-of-file indicator for the stream and undoes any effects of the [1mungetc[22m(3) function  on  the  same
+       stream.
+
+       The [1mftell[22m() function obtains the current value of the file position indicator for the stream pointed to by [4mstream[24m.
+
+       The [1mrewind[22m() function sets the file position indicator for the stream pointed to by [4mstream[24m to the beginning of the file.  It is equivalent to:
+
+              (void) fseek(stream, 0L, SEEK_SET)
+
+       except that the error indicator for the stream is also cleared (see [1mclearerr[22m(3)).
+
+       The  [1mfgetpos[22m()  and [1mfsetpos[22m() functions are alternate interfaces equivalent to [1mftell[22m() and [1mfseek[22m() (with [4mwhence[24m set to [1mSEEK_SET[22m), setting and storing the current value of the
+       file offset into or from the object referenced by [4mpos[24m.  On some non-UNIX systems, an [4mfpos_t[24m object may be a complex object and these routines may be the only way to  portably
+       reposition a text stream.
+
+       If  the  stream refers to a regular file and the resulting stream offset is beyond the size of the file, subsequent writes will extend the file with a hole, up to the offset,
+       before committing any data.  See [1mlseek[22m(2) for details on file seeking semantics.
+
+[1mRETURN VALUE[0m
+       The [1mrewind[22m() function returns no value.  Upon successful completion, [1mfgetpos[22m(), [1mfseek[22m(), [1mfsetpos[22m() return 0, and [1mftell[22m() returns the current offset.   Otherwise,  -1  is  re‐
+       turned and [4merrno[24m is set to indicate the error.
+
+[1mERRORS[0m
+       [1mEINVAL [22mThe [4mwhence[24m argument to [1mfseek[22m() was not [1mSEEK_SET[22m, [1mSEEK_END[22m, or [1mSEEK_CUR[22m.  Or: the resulting file offset would be negative.
+
+       [1mESPIPE [22mThe file descriptor underlying [4mstream[24m is not seekable (e.g., it refers to a pipe, FIFO, or socket).
+
+       The  functions [1mfgetpos[22m(), [1mfseek[22m(), [1mfsetpos[22m(), and [1mftell[22m() may also fail and set [4merrno[24m for any of the errors specified for the routines [1mfflush[22m(3), [1mfstat[22m(2), [1mlseek[22m(2), and [1mmal‐[0m
+       [1mloc[22m(3).
+
+[1mATTRIBUTES[0m
+       For an explanation of the terms used in this section, see [1mattributes[22m(7).
+       ┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬───────────────┬─────────┐
+       │ [1mInterface                                                                                                                                        [22m│ [1mAttribute     [22m│ [1mValue   [22m│
+       ├──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼───────────────┼─────────┤
+       │ [1mfseek[22m(), [1mftell[22m(), [1mrewind[22m(), [1mfgetpos[22m(), [1mfsetpos[22m()                                                                                                 │ Thread safety │ MT-Safe │
+       └──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴───────────────┴─────────┘
+
+[1mSTANDARDS[0m
+       C11, POSIX.1-2008.
+
+[1mHISTORY[0m
+       POSIX.1-2001, C89.
+
+[1mSEE ALSO[0m
+       [1mlseek[22m(2), [1mfseeko[22m(3)
+
+Linux man-pages 6.7                                                                   2023-10-31                                                                             [4mfseek[24m(3)

@@ -1,0 +1,14 @@
+Client:
+1   获取Socket描述符        socket()
+2   给Socket取得地址        bind()
+3   连接到服务器            recvfrom()
+4   接收数据                
+5   关闭Socket            close()
+
+
+Server:
+1   获取Socket描述符        socket()
+2   给Socket取得地址        bind()
+3   将Socket变为监听        setsockopt() 
+4   接收数据                sendto()
+5   关闭Socket              close()
